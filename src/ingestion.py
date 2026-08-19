@@ -35,11 +35,14 @@ def download_celestrak_data(group="ACTIVE"):
     return False
 
 def ingest_api_data(con):
+    cache_file = './dataset/celestrak_cache/celestrak_data.json'
+
     if check_celestrak_cache_folder():
-        if download_celestrak_data():
-            cache_file = './dataset/celestrak_cache/celestrak_data.json'
-            con.sql(f"INSERT INTO celestrak SELECT * FROM read_json_auto('{cache_file}') ON CONFLICT (NORAD_CAT_ID) DO NOTHING")
-            print("Ingested Celestrak data into the database.")
+        if not download_celestrak_data():
+            return
+        
+    con.sql(f"INSERT INTO celestrak SELECT * FROM read_json_auto('{cache_file}') ON CONFLICT (NORAD_CAT_ID) DO NOTHING")
+    print("Ingested Celestrak data into the database.")
 
 def ingest_csv_data(con):
     if not os.path.exists('./dataset/train_data.csv'):
