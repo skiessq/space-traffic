@@ -1,0 +1,7 @@
+project_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: 'space_traffic.db'
+      threads: 4

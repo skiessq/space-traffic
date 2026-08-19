@@ -11,3 +11,7 @@ dataset/*.csv
 
 # Virtual environments
 .venv
+
+# dbt
+logs/
+.user.yml
