@@ -9,7 +9,7 @@ dataset/*.csv
 *.db
 *.csv
 *.json
-
+target/
 # Virtual environments
 .venv
 

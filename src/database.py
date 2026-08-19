@@ -72,8 +72,8 @@ def init_db():
                 "c_time_lastob_end DOUBLE, " \
                 "c_recommended_od_span DOUBLE, " \
                 "c_actual_od_span DOUBLE, " \
-                "c_obs_available DOUBLE, " \
-                "c_obs_used DOUBLE, " \
+                "c_obs_available BIGINT, " \
+                "c_obs_used BIGINT, " \
                 "c_residuals_accepted DOUBLE, " \
                 "c_weighted_rms DOUBLE, " \
                 "c_rcs_estimate DOUBLE, " \
