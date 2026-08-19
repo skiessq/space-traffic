@@ -1,0 +1,2 @@
+https://kelvins.esa.int/media/public/competitions/collision-avoidance-challenge/test_data.csv
+https://kelvins.esa.int/media/public/competitions/collision-avoidance-challenge/train_data.zip
