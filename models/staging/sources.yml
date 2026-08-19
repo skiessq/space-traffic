@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: raw_space_traffic
+    description: "Raw satellite and space conjunction data loaded into DuckDB"
+    schema: main
+    tables:
+      - name: celestrak
+        description: "Raw orbital elements and metadata from CelesTrak"
+        columns:
+          - name: norad_cat_id
+            description: "NORAD Catalog ID"
+            tests:
+              - unique
+              - not_null
+
+      - name: space_conjunctions
+        description: "Conjunction Data Messages containing risk, covariance, and orbit determination data"
+        columns:
+          - name: event_id
+            description: "Unique conjunction event identifier"
+          - name: time_to_tca
+            description: "Time to Time of Closest Approach"
+          - name: split
+            description: "Dataset partition split"

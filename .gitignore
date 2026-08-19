@@ -8,6 +8,7 @@ wheels/
 dataset/*.csv
 *.db
 *.csv
+*.json
 
 # Virtual environments
 .venv
