@@ -5,7 +5,7 @@ import json
 import os
 
 def check_celestrak_cache_folder():
-    dir_name = './dataset/celestrak_cache'
+    dir_name = "./dataset/celestrak_cache"
     if os.path.isdir(dir_name):
         if not os.listdir(dir_name):
             print("Directory is empty. Downloading JSON Data.")
@@ -35,7 +35,7 @@ def download_celestrak_data(group="ACTIVE"):
     return False
 
 def ingest_api_data(con):
-    cache_file = './dataset/celestrak_cache/celestrak_data.json'
+    cache_file = "./dataset/celestrak_cache/celestrak_data.json"
 
     if check_celestrak_cache_folder():
         if not download_celestrak_data():

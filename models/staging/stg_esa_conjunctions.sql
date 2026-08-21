@@ -1,13 +1,10 @@
 {{ config(materialized = 'view') }}
 
 select
-    -- Identifiers & Partitioning
     event_id,
     mission_id,
     split as dataset_split,
     c_object_type as chaser_object_type,
-
-    -- Encounter Geometry & Risk Metrics
     risk,
     max_risk_estimate,
     max_risk_scaling,
@@ -15,18 +12,12 @@ select
     mahalanobis_distance,
     relative_speed,
     time_to_tca as time_to_tca_days,
-
-    -- Relative Position Components
     relative_position_r as relative_position_radial_meters,
     relative_position_t as relative_position_transverse_meters,
     relative_position_n as relative_position_normal_meters,
-
-    -- Relative Velocity Components
     relative_velocity_r as relative_velocity_radial_mps,
     relative_velocity_t as relative_velocity_transverse_mps,
     relative_velocity_n as relative_velocity_normal_mps,
-
-    -- Spatial Coordinates & Space Weather Indices
     geocentric_latitude as geocentric_latitude_degrees,
     azimuth as relative_velocity_azimuth_degrees,
     elevation as relative_velocity_elevation_degrees,
@@ -34,16 +25,12 @@ select
     f3m as f3m_81_day_running_mean_f10,
     ssn as wolf_sunspot_number,
     ap as daily_planetary_geomagnetic_amplitude_index,
-
-    -- Standard Deviations
     t_sigma_r as target_radial_pos_std_dev_meters,
     t_sigma_t as target_transverse_pos_std_dev_meters,
     t_sigma_n as target_normal_pos_std_dev_meters,
     t_sigma_rdot as target_radial_vel_std_dev_mps,
     t_sigma_tdot as target_transverse_vel_std_dev_mps,
     t_sigma_ndot as target_normal_vel_std_dev_mps,
-
-    -- Covariance Correlations & Determinant
     t_ct_r as target_corr_transverse_pos_radial_pos,
     t_cn_r as target_corr_normal_pos_radial_pos,
     t_cn_t as target_corr_normal_pos_transverse_pos,
@@ -60,8 +47,6 @@ select
     t_cndot_rdot as target_corr_normal_vel_radial_vel,
     t_cndot_tdot as target_corr_normal_vel_transverse_vel,
     t_position_covariance_det as target_pos_covariance_determinant,
-
-    -- Physical & Orbit Characteristics
     t_span as target_collision_span_meters,
     t_h_apo as target_apogee_altitude_km,
     t_h_per as target_perigee_altitude_km,
@@ -72,8 +57,6 @@ select
     t_cd_area_over_mass as target_ballistic_coeff_drag_sqm_per_kg,
     t_cr_area_over_mass as target_solar_rad_pressure_coeff_sqm_per_kg,
     t_sedr as target_energy_dissipation_rate_w_per_kg,
-
-    -- Orbit Determination Parameters
     t_actual_od_span as target_actual_od_interval_days,
     t_recommended_od_span as target_recommended_od_interval_days,
     t_obs_available as target_count_observations_available,
@@ -82,16 +65,12 @@ select
     t_time_lastob_start as target_days_to_last_ob_start,
     t_time_lastob_end as target_days_to_last_ob_end,
     t_weighted_rms as target_od_weighted_rms,
-
-    -- Standard Deviations (Sigmas)
     c_sigma_r as chaser_radial_pos_std_dev_meters,
     c_sigma_t as chaser_transverse_pos_std_dev_meters,
     c_sigma_n as chaser_normal_pos_std_dev_meters,
     c_sigma_rdot as chaser_radial_vel_std_dev_mps,
     c_sigma_tdot as chaser_transverse_vel_std_dev_mps,
     c_sigma_ndot as chaser_normal_vel_std_dev_mps,
-
-    -- Covariance Correlations & Determinant
     c_ct_r as chaser_corr_transverse_pos_radial_pos,
     c_cn_r as chaser_corr_normal_pos_radial_pos,
     c_cn_t as chaser_corr_normal_pos_transverse_pos,
@@ -108,8 +87,6 @@ select
     c_cndot_rdot as chaser_corr_normal_vel_radial_vel,
     c_cndot_tdot as chaser_corr_normal_vel_transverse_vel,
     c_position_covariance_det as chaser_pos_covariance_determinant,
-
-    -- Physical & Orbit Characteristics
     c_span as chaser_collision_span_meters,
     c_h_apo as chaser_apogee_altitude_km,
     c_h_per as chaser_perigee_altitude_km,
@@ -120,8 +97,6 @@ select
     c_cd_area_over_mass as chaser_ballistic_coeff_drag_sqm_per_kg,
     c_cr_area_over_mass as chaser_solar_rad_pressure_coeff_sqm_per_kg,
     c_sedr as chaser_energy_dissipation_rate_w_per_kg,
-
-    -- Orbit Determination Parameters
     c_actual_od_span as chaser_actual_od_interval_days,
     c_recommended_od_span as chaser_recommended_od_interval_days,
     c_obs_available as chaser_count_observations_available,

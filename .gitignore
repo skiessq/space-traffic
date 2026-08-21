@@ -10,6 +10,7 @@ dataset/*.csv
 *.csv
 *.json
 target/
+*.pkl
 # Virtual environments
 .venv
 
