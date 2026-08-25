@@ -23,3 +23,7 @@ sources:
             description: "Time to Time of Closest Approach"
           - name: split
             description: "Dataset partition split"
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['train', 'test']

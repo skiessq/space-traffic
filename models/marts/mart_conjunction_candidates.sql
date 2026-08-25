@@ -3,6 +3,7 @@
 select 
     t.norad_cat_id as target_norad_id,
     t.object_name as target_name,
+    t.epoch_timestamp as target_epoch,
     t.inclination_deg as target_inc,
     t.orbit_eccentricity as target_ecc,
     t.right_ascension_ascending_node_deg as target_raan,
@@ -15,6 +16,7 @@ select
     t.apogee_altitude_km as target_apogee,
     c.norad_cat_id as chaser_norad_id,
     c.object_name as chaser_name,
+    c.epoch_timestamp as chaser_epoch,
     c.inclination_deg as chaser_inc,
     c.orbit_eccentricity as chaser_ecc,
     c.right_ascension_ascending_node_deg as chaser_raan,

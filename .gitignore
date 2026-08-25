@@ -1,19 +1,47 @@
-# Python-generated files
+# Python & Virtual Environments
 __pycache__/
-*.py[oc]
-build/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+*.egg-info/
 dist/
-wheels/
-*.egg-info
-dataset/*.csv
+build/
+
+# DuckDB & Databases
 *.db
+*.db.wal
+*.duckdb
+space_traffic.db
+src/space_traffic.db
+
+# Datasets & Cache
+dataset/*.csv
+dataset/celestrak_cache/
 *.csv
-*.json
-target/
+
+# ML Models & Artifacts
 *.pkl
-# Virtual environments
-.venv
+*.joblib
+
+# Dagster Runtime
+.tmp_dagster_home*
+src/.tmp_dagster_home*
+.dagster/
 
 # dbt
+target/
+dbt_packages/
 logs/
 .user.yml
+
+# Environment & Secrets
+.env
+.env.*
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
