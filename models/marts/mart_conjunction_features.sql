@@ -15,6 +15,7 @@ select
     time_to_tca_days,
     miss_distance,
     mahalanobis_distance,
+    log10(greatest(mahalanobis_distance, 1e-11)) as log_mahalanobis,
     relative_speed,
     relative_position_radial_meters,
     relative_position_transverse_meters,
@@ -33,6 +34,11 @@ select
     target_radial_pos_std_dev_meters,
     target_transverse_pos_std_dev_meters,
     target_normal_pos_std_dev_meters,
+    sqrt(
+        power(target_radial_pos_std_dev_meters, 2) + power(chaser_radial_pos_std_dev_meters, 2) +
+        power(target_transverse_pos_std_dev_meters, 2) + power(chaser_transverse_pos_std_dev_meters, 2) +
+        power(target_normal_pos_std_dev_meters, 2) + power(chaser_normal_pos_std_dev_meters, 2)
+    ) as combined_pos_sigma,
     target_radial_vel_std_dev_mps,
     case when target_radial_vel_std_dev_mps is not null then 1 else 0 end as has_target_velocity_covariance,
     target_transverse_vel_std_dev_mps,
@@ -53,6 +59,7 @@ select
     target_corr_normal_vel_radial_vel,
     target_corr_normal_vel_transverse_vel,
     target_pos_covariance_determinant,
+    log10(greatest(target_pos_covariance_determinant, 1e-11)) as log_target_pos_det,
     chaser_radial_pos_std_dev_meters,
     chaser_transverse_pos_std_dev_meters,
     chaser_normal_pos_std_dev_meters,
@@ -76,6 +83,7 @@ select
     chaser_corr_normal_vel_radial_vel,
     chaser_corr_normal_vel_transverse_vel,
     chaser_pos_covariance_determinant,
+    log10(greatest(chaser_pos_covariance_determinant, 1e-11)) as log_chaser_pos_det,
     target_collision_span_meters,
     target_apogee_altitude_km,
     target_perigee_altitude_km,
@@ -89,8 +97,10 @@ select
     target_energy_dissipation_rate_w_per_kg,
     target_actual_od_interval_days,
     target_recommended_od_interval_days,
+    target_actual_od_interval_days / (target_recommended_od_interval_days + 1e-3) as target_od_staleness_ratio,
     target_count_observations_available,
     target_count_observations_used,
+    target_count_observations_used / (target_count_observations_available + 1e-4) as target_ob_usage_ratio,
     target_residuals_accepted_ratio,
     target_days_to_last_ob_start,
     target_days_to_last_ob_end,
@@ -108,10 +118,12 @@ select
     chaser_energy_dissipation_rate_w_per_kg,
     chaser_actual_od_interval_days,
     chaser_recommended_od_interval_days,
-    coalesce(chaser_count_observations_available, 0) as chaser_count_observations_available,
-    coalesce(chaser_count_observations_used, 0) as chaser_count_observations_used,
+    chaser_count_observations_available,
+    chaser_count_observations_used,
     chaser_residuals_accepted_ratio,
     chaser_days_to_last_ob_start,
     chaser_days_to_last_ob_end,
-    chaser_od_weighted_rms
+    chaser_od_weighted_rms,
+    (target_collision_span_meters + chaser_collision_span_meters) / (miss_distance + 1e-3) as collision_span_to_miss_ratio,
+    miss_distance / (combined_pos_sigma + 1e-11) as miss_to_sigma_ratio
 from {{ ref('stg_esa_conjunctions') }}

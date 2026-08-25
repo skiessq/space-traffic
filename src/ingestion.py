@@ -17,7 +17,7 @@ def check_celestrak_cache_folder():
         os.mkdir(dir_name)
         print("Directory created. Downloading JSON Data.")
         return True
- 
+
 def download_celestrak_data(group="ACTIVE"):
     output_file = "./dataset/celestrak_cache/celestrak_data.json"
     url = f"https://celestrak.org/NORAD/elements/gp.php?GROUP={group}&FORMAT=JSON"
