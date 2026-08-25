@@ -1,7 +1,7 @@
 import duckdb
 
-def init_db():
-    with duckdb.connect("space_traffic.db") as con:
+def init_db(db_path: str = "space_traffic.db"):
+    with duckdb.connect(db_path) as con:
         con.sql("CREATE TABLE IF NOT EXISTS celestrak (" \
             "OBJECT_ID VARCHAR(50), " \
             "OBJECT_NAME VARCHAR(255), " \
@@ -127,6 +127,29 @@ def init_db():
                 "SSN DOUBLE, " \
                 "AP DOUBLE, " \
                 "PRIMARY KEY (event_id, time_to_tca, split)"
+        ")")
+
+        con.sql("CREATE TABLE IF NOT EXISTS screener_conjunction_alerts (" \
+            "target_norad_id INTEGER, " \
+            "target_name VARCHAR(255), " \
+            "chaser_norad_id INTEGER, " \
+            "chaser_name VARCHAR(255), " \
+            "miss_distance_meters DOUBLE, " \
+            "relative_speed_mps DOUBLE, " \
+            "time_to_tca_days DOUBLE, " \
+            "tca_estimated_at TIMESTAMP, " \
+            "screened_at TIMESTAMP" \
+        ")")
+
+        con.sql("CREATE TABLE IF NOT EXISTS cdm_risk_evaluations (" \
+            "event_id BIGINT, " \
+            "mission_id BIGINT, " \
+            "time_to_tca_days DOUBLE, " \
+            "miss_distance DOUBLE, " \
+            "collision_risk_prob DOUBLE, " \
+            "is_critical_risk_predicted INTEGER, " \
+            "scored_at TIMESTAMP, " \
+            "PRIMARY KEY (event_id, time_to_tca_days)" \
         ")")
 
 if __name__ == "__main__":

@@ -62,8 +62,8 @@ def find_best_threshold(y_true, val_probs, target_recall=0.85):
     best_idx = valid_indices[np.argmax(precisions[valid_indices])]
     return thresholds[best_idx], precisions[best_idx]
 
-def train_model():
-    df = load_dataset("space_traffic.db")
+def train_model(db_path: str = "space_traffic.db", model_path: str = MODEL_PATH) -> dict:
+    df = load_dataset(db_path)
 
     X_train, y_train, X_val, y_val, X_test, y_test, feature_cols = prepare_splits(df)
 
@@ -100,7 +100,8 @@ def train_model():
     best_threshold, best_val_f1 = find_best_threshold(y_val, val_probs)
     y_pred = (test_probs >= best_threshold).astype(int)
 
-    print(f"Average Precision Score: {average_precision_score(y_test, test_probs):.4f}")
+    avg_prec = float(average_precision_score(y_test, test_probs))
+    print(f"Average Precision Score: {avg_prec:.4f}")
     print(f"Best Threshold: {best_threshold:.4f}")
     print(f"Best F-beta Score: {best_val_f1:.4f}")
     print("\nConfusion Matrix:")
@@ -108,9 +109,15 @@ def train_model():
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred, digits=4))
 
-    os.makedirs(MODEL_DIR, exist_ok=True)
-    joblib.dump({"model": model, "feature_names": feature_cols, "optimal_threshold": best_threshold}, MODEL_PATH)
-    print(f"\nModel artifact saved to {MODEL_PATH}")
+    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+    joblib.dump({"model": model, "feature_names": feature_cols, "optimal_threshold": best_threshold}, model_path)
+    print(f"\nModel artifact saved to {model_path}")
+
+    return {
+        "average_precision_score": avg_prec,
+        "optimal_threshold": float(best_threshold),
+        "best_val_f1_score": float(best_val_f1),
+    }
 
 if __name__ == "__main__":
     train_model()
