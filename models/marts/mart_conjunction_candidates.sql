@@ -26,7 +26,7 @@ select
     c.perigee_altitude_km as chaser_perigee,
     c.apogee_altitude_km as chaser_apogee,
     abs(t.perigee_altitude_km - c.perigee_altitude_km) as delta_perigee_km
-from {{ ref('int_celestrak_satellites_enriched') }} t
-join {{ ref('int_celestrak_satellites_enriched') }} c on t.norad_cat_id < c.norad_cat_id
+from {{ ref('int_celestrak_satellites') }} t
+join {{ ref('int_celestrak_satellites') }} c on t.norad_cat_id < c.norad_cat_id
 and c.perigee_altitude_km <= t.apogee_altitude_km + 25.0
 and c.apogee_altitude_km >= t.perigee_altitude_km - 25.0
